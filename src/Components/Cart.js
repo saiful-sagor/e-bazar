@@ -1,4 +1,5 @@
 import React ,{ useState,useEffect }from 'react'
+import p1 from '../images/apple-watch.png'
 import p2 from "../images/imac.png";
 import p3 from '../images/headphone1.jpeg'
 
@@ -19,30 +20,38 @@ const Cart = () => {
         image: p3,
         price: 99.9,
         quantity:0,
+      },
+      {
+        id: 8,
+        name: 'Watch',
+        details: "Apple Watch Series 8 [GPS 41mm] Smart Watch w/Starlight Aluminum Case with Starlight Sport Band - S/M. Fitness Tracker, Blood Oxygen & ECG Apps, Always-On Retina Display, Water Resistant",
+        image: p1,
+        price: 99.9,
+        quantity:0,
       }]);
       const [subtotal, setSubtotal] = useState(0);
       const [total, setTotal] = useState(0);
 
     // Function to add an item to the cart
-  const addToCart = (product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
+  // const addToCart = (product) => {
+  //   const existingItem = cartItems.find((item) => item.id === product.id);
 
-    if (existingItem) {
-      // If the item already exists in the cart, increase the quantity
-      const updatedItems = cartItems.map((item) => {
-        if (item.id === product.id) {
-          return { ...item, quantity: item.quantity + 1 };
-        }
-        return item;
-      });
+  //   if (existingItem) {
+  //     // If the item already exists in the cart, increase the quantity
+  //     const updatedItems = cartItems.map((item) => {
+  //       if (item.id === product.id) {
+  //         return { ...item, quantity: item.quantity + 1 };
+  //       }
+  //       return item;
+  //     });
 
-      setCartItems(updatedItems);
-    } else {
-      // If the item is not in the cart, add it with a quantity of 1
-      const newItem = { ...product, quantity: 1 };
-      setCartItems([...cartItems, newItem]);
-    }
-  };
+  //     setCartItems(updatedItems);
+  //   } else {
+  //     // If the item is not in the cart, add it with a quantity of 1
+  //     const newItem = { ...product, quantity: 1 };
+  //     setCartItems([...cartItems, newItem]);
+  //   }
+  // };
 
   // Function to increase the quantity of an item in the cart
   const increaseQuantity = (itemId) => {

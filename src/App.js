@@ -9,6 +9,7 @@ import p1 from "./images/apple-watch.png";
 import p2 from "./images/imac.png";
 import p3 from './images/headphone1.jpeg'
 import Cart from "./Components/Cart";
+import Products from "./Components/Products";
 
 const App = () => {
 
@@ -108,6 +109,7 @@ const App = () => {
         <Route index element={<Home products={products} />} />
         <Route path="login" element={<Login users={users}/>} />
         <Route path="register" element={<Signup users ={users}/>} />
+        <Route path="products" element={<Products products ={products}/>} />
         <Route path="/product/:id" element={<Productdetails products={products}/>} />
         <Route path="cart" element={<Cart />} />
       </Routes>
