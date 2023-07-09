@@ -1,20 +1,23 @@
-import React,{useState,useEffect} from 'react'
-import { Link } from "react-router-dom";
+import React,{useState,useContext,useEffect} from 'react'
+import { Link,useNavigate  } from "react-router-dom";
 import ErrorMessage from './ErrorMessage';
 import SignupSuccessMessage from './SignupSuccessMessage';
+import { UserContext } from './UserContext';
 const Signup = (props) => {
 
     
-    const [users, setUsers] = useState(props.users);
+    // const [users, setUsers] = useState(props.users);
     const [number, setNumber] = useState('');
     const [password, setPassword] = useState('');
     const [showerror,setShowerror] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+     const { users,setNewUser } = useContext(UserContext);
+     const navigate = useNavigate();
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
      
         const isDuplicateUser = users.some((user) => user.number === number);
@@ -28,17 +31,32 @@ const Signup = (props) => {
             
             const newUser = {
                 number: number,
-                password: password
+                password: password,
+                isAdmin:false
               };
+              try {
+                // Example of an asynchronous operation using setTimeout
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+                
+                // Set the new user in the context or update the users array
+                setNewUser(newUser);
           
-              setUsers((prevUsers) => [...prevUsers, newUser]);
-              setShowSuccessMessage(true)
-              setSuccessMessage('Signup successful! Welcome aboard.');
-              console.log(users);
+                setShowSuccessMessage(true);
+                setSuccessMessage('Signup successful! Welcome aboard.');
+                
+                console.log(users);
           
-              // Reset form fields
-              setNumber('');
-              setPassword('');
+                // Reset form fields
+                setNumber('');
+                setPassword('');
+                
+              } catch (error) {
+                // Handle any errors that occur during the asynchronous operation
+                setShowSuccessMessage(false);
+                setErrorMessage('Error occurred during signup.');
+                setShowerror(true);
+              }
+              
         }
 
       };
@@ -72,6 +90,7 @@ const Signup = (props) => {
           timeoutId = setTimeout(() => {
             setShowSuccessMessage(false)
             setSuccessMessage('') 
+            navigate('/login');
           }, 1000);
         }
     
@@ -85,6 +104,7 @@ const Signup = (props) => {
         {showerror && <ErrorMessage message={errorMessage} />}
         { showSuccessMessage && (
         <SignupSuccessMessage message={successMessage} />
+       
       )}
       <div className="md:w-1/3 max-w-sm">
         <img

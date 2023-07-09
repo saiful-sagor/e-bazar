@@ -1,80 +1,92 @@
-import React, { useState,useEffect} from "react";
-import { Link , useNavigate} from "react-router-dom";
+import React, { useState, useEffect,useContext} from "react";
+import { Link, useNavigate } from "react-router-dom";
 import SignupSuccessMessage from "./SignupSuccessMessage";
 import ErrorMessage from "./ErrorMessage";
+import { UserContext } from "./UserContext";
 
 const Login = (props) => {
-    
+
     const [number, setNumber] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
-    const [showerror,setShowerror] = useState(false);
+    const [showerror, setShowerror] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isAdmin,setIsAdmin] = useState(false)
     const navigate = useNavigate();
+
+    const { users ,setIsloggedin} = useContext(UserContext);
     
 
 
     const handleLogin = (e) => {
         e.preventDefault();
-      
+
         // Find the user object with matching credentials
-        const foundUser = props.users.find(
-          (user) => user.number === number && user.password === password
+        const foundUser = users.find(
+            (user) => user.number === number && user.password === password
         );
-      
+
         if (foundUser) {
-          // Display success message
-           setShowMessage(true)
-           setMessage('Login successful');
-                 // Redirect to home route
-           
-          
-           setNumber('');
-           setPassword('');
+            // Display success message
+            setShowMessage(true)
+            setMessage('Login successful');
+            setIsloggedin(true)
+            // Redirect to home route
+            if(foundUser.isAdmin){
+               setIsAdmin(true);
+            } 
+
+            setNumber('');
+            setPassword('');
 
         } else {
-          // Display error message
-          setShowMessage(false)
-          setErrorMessage('Invalid number or password.');
-          setShowerror(true)
-          console.log(props.users);
-        }
-      };
-      
-      useEffect(() => {
-        let timeoutId;
-    
-        if (errorMessage) {
-          timeoutId = setTimeout(() => {
-            setShowerror(false) 
-            setErrorMessage('') 
-          }, 1000);
-        }
-    
-        return () => clearTimeout(timeoutId);
-      }, [errorMessage]);
-
-      useEffect(() => {
-        let timeoutId;
-    
-        if (message) {
-          timeoutId = setTimeout(() => {
+            // Display error message
             setShowMessage(false)
-            setMessage('') 
-            navigate('/');
-          }, 1000);
+            setErrorMessage('Invalid number or password.');
+            setShowerror(true)
+            console.log(props.users);
         }
-    
+    };
+
+    useEffect(() => {
+        let timeoutId;
+
+        if (errorMessage) {
+            timeoutId = setTimeout(() => {
+                setShowerror(false)
+                setErrorMessage('')
+            }, 1000);
+        }
+
         return () => clearTimeout(timeoutId);
-      }, [message,navigate]);
+    }, [errorMessage]);
+
+    useEffect(() => {
+        let timeoutId;
+
+        if (message) {
+            timeoutId = setTimeout(() => {
+                setShowMessage(false)
+                setMessage('')
+                if (isAdmin) {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/');
+                }
+
+            }, 1000);
+        }
+
+        return () => clearTimeout(timeoutId);
+    }, [message, navigate,isAdmin]);
 
     return (
         <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
-            { showMessage && (
-        <SignupSuccessMessage message={message} />
-      )}
-      {showerror && <ErrorMessage message={errorMessage} />}
+            {showMessage && (
+                <SignupSuccessMessage message={message} />
+            )}
+            {showerror && <ErrorMessage message={errorMessage} />}
             <div className="md:w-1/3 max-w-sm">
                 <img
                     src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"

@@ -10,23 +10,37 @@ import p2 from "./images/imac.png";
 import p3 from './images/headphone1.jpeg'
 import Cart from "./Components/Cart";
 import Products from "./Components/Products";
+import Dashboard from "./Components/Dashboard";
+import { UserProvider } from "./Components/UserContext";
+import Orders from "./Components/Orders";
+import Users from "./Components/Users";
+import SuccessMessage from "./Components/SuccessMessage";
+
 
 const App = () => {
 
-    const users =[
-      {
-        number:'01875925975',
-        password:'1234'
-      },
-      {
-        number:'01875925976',
-        password:'12345'
-      },
-      {
-        number:'01875925978',
-        password:'123456'
-      }
-    ]
+    // const users =[
+    //   {
+    //     number:'01875925975',
+    //     password:'1234',
+    //     isAdmin: true
+    //   },
+    //   {
+    //     number:'01875925976',
+    //     password:'12345',
+    //     isAdmin: false
+    //   },
+    //   {
+    //     number:'01875925978',
+    //     password:'123456',
+    //     isAdmin: false
+    //   },
+    //   {
+    //     number:'01875925979',
+    //     password:'123456',
+    //     isAdmin: false
+    //   }
+    // ]
 
     const products = [
       {
@@ -104,14 +118,21 @@ const App = () => {
 
   return (
     <Router>
-      <Navbar />
+      <UserProvider><Navbar /></UserProvider>
       <Routes>
         <Route index element={<Home products={products} />} />
-        <Route path="login" element={<Login users={users}/>} />
-        <Route path="register" element={<Signup users ={users}/>} />
+        
+        <Route path="login" element={<UserProvider><Login /></UserProvider>} />
+        <Route path="register" element={<UserProvider><Signup /></UserProvider>} />
+        
+
         <Route path="products" element={<Products products ={products}/>} />
         <Route path="/product/:id" element={<Productdetails products={products}/>} />
         <Route path="cart" element={<Cart />} />
+        <Route path="users" element={<Users />} />
+        <Route path="orders" element={<Orders />} />
+        <Route path="successfull" element={<SuccessMessage />} />
+        <Route path="/admin/dashboard" element={<Dashboard products={products} />} />
       </Routes>
     </Router>
   );

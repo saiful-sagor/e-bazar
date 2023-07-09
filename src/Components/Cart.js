@@ -1,4 +1,5 @@
 import React ,{ useState,useEffect }from 'react'
+import { useNavigate } from "react-router-dom";
 import p1 from '../images/apple-watch.png'
 import p2 from "../images/imac.png";
 import p3 from '../images/headphone1.jpeg'
@@ -31,6 +32,7 @@ const Cart = () => {
       }]);
       const [subtotal, setSubtotal] = useState(0);
       const [total, setTotal] = useState(0);
+      const navigate = useNavigate();
 
     // Function to add an item to the cart
   // const addToCart = (product) => {
@@ -53,6 +55,9 @@ const Cart = () => {
   //   }
   // };
 
+  const HandleClick = ()=>{
+    navigate('/successfull');
+  }
   // Function to increase the quantity of an item in the cart
   const increaseQuantity = (itemId) => {
     const updatedItems = cartItems.map((item) => {
@@ -92,6 +97,8 @@ const Cart = () => {
     const newTotal = newSubtotal + 4.99; // Add shipping cost or any other additional costs
     setTotal(newTotal);
   }, [cartItems]);
+
+ 
 
   return (
 
@@ -218,7 +225,7 @@ const Cart = () => {
               <p className="text-sm text-gray-700">including VAT</p>
             </div>
           </div>
-          <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
+          <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600" onClick={HandleClick}>
             Check out
           </button>
         </div>
